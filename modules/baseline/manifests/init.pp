@@ -12,14 +12,16 @@ class baseline {
   }
 
   file { "/home/deploy":
-    ensure => 'directory',
-    owner => 'deploy',
-    group => 'deploy',
+    ensure => directory,
+    owner => deploy,
+    group => deploy,
     mode => '0750',
   }
 
   file { '/etc/ssh/sshd_config':
      ensure => file,
+     owner => root,
+     group => root,
      mode   => 600,
      source => 'puppet:///modules/baseline/sshd_config',
   }
@@ -30,10 +32,11 @@ class baseline {
     subscribe => File['/etc/ssh/sshd_config'],
   }
 
+  include monit
+
   #TODO:
   #activate ssh public key authentication for 'deploy', disable password
   #only allow deploy to login via ssh
   #allow only port 22 SSH
-  #install monit!
 }
 
