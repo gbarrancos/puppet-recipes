@@ -7,7 +7,7 @@ class baseline {
   user  { 'deploy':
     ensure => 'present',
     home => '/home/deploy',
-    password => 'l3r0l3r0',
+    shell => '/bin/bash',
     groups => ["admin"], #added to sudoers by default on Ubuntu
   }
 
@@ -32,11 +32,22 @@ class baseline {
     subscribe => File['/etc/ssh/sshd_config'],
   }
 
-  include monit
+  exec { 'ssh Firewall rule':
+      user => root,
+      group => root,
+      command => '/usr/sbin/ufw allow 22',
+  }	
 
+  exec { 'Activate Firewall':
+      user => root,
+      group => root,
+      command => '/usr/sbin/ufw enable'  
+  }
+  
+  include monit
+  
   #TODO:
   #activate ssh public key authentication for 'deploy', disable password
   #only allow deploy to login via ssh
-  #allow only port 22 SSH
 }
 

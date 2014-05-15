@@ -1,0 +1,20 @@
+check process nginx with pidfile /run/nginx.pid
+    start program = "/usr/sbin/service nginx start"
+    stop program = "/usr/sbin/service nginx stop"
+    if failed host 127.0.0.1 port 80 then restart
+    if cpu is greater than 40% for 2 cycles then alert
+
+
+#TODO: configure notifications	 
+#check filesystem datafs with path /dev/sdb1
+#    start program  = "/bin/mount /data"
+#    stop program  = "/bin/umount /data"
+#    if failed permission 660 then unmonitor
+#    if failed uid root then unmonitor
+#    if failed gid disk then unmonitor
+#    if space usage > 80% for 5 times within 15 cycles then alert
+#    if space usage > 99% then stop
+#    if inode usage > 30000 then alert
+#    if inode usage > 99% then stop
+#    group server
+
