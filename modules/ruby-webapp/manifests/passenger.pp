@@ -37,8 +37,14 @@ class passenger {
     ensure => running, 
   } 
   
-  #TODO: child processes according to machine processor facts
-
+  file { '/etc/nginx/nginx.conf':
+    owner => root,
+    group => root,
+    ensure => file,
+    mode => 644,
+    content => template('ruby-webapp/nginx.conf.erb'),
+  }
+  
 }
 
 
