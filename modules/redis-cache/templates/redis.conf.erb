@@ -123,7 +123,7 @@ maxmemory-policy allkeys-lru
   #I havent found a way to specify the desired unit for free memory system fact, so extra string-manipulation was needed 
   free_memory_string = @memoryfree.split(' ') # Format: '450.03 MB'
   memory_per_server = (free_memory_string[0].to_i / @physicalprocessorcount.to_i).to_i
-  memory_per_server_str = memory_per_server.to_s + free_memory_string[1]   
+  memory_per_server_str = memory_per_server.to_s + free_memory_string[1].downcase   
 %> 
 maxmemory <%= memory_per_server_str %>
 
