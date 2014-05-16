@@ -1,4 +1,4 @@
 node default {
   include baseline
-  include static-webserver
+  include ruby-webapp
 }
