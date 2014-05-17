@@ -1,0 +1,8 @@
+<% port_begin = @initial_redis_port.to_i
+   extra_processors = @physicalprocessorcount.to_i - 1 
+   port_end = port_begin + extra_processors
+ %>
+<% port_end.downto(port_begin).each do |port| %>
+   check process redis with pidfile /var/run/redis/redis-server-<%=port%>.pid
+   if failed host 127.0.0.1 port <%=port%> then alert
+<% end %>

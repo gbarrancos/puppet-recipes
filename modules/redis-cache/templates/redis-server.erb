@@ -19,8 +19,8 @@ NAME=redis-server
 DESC=redis-server
 
 RUNDIR=/var/run/redis
-NUMPROCESSORS=`cat /proc/cpuinfo  |grep processor |wc -l`
-BASE_PORT=6378
+NUMPROCESSORS=<%=@physicalprocessorcount%>
+BASE_PORT=<%=@initial_redis_port.to_i - 1 %> 
 
 test -x $DAEMON || exit 0
 

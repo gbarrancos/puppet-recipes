@@ -1,0 +1,10 @@
+<% port_begin = @initial_redis_port.to_i
+   extra_processors = @physicalprocessorcount.to_i - 1 
+   port_end = port_begin + extra_processors
+ %>
+ 
+[Redis]
+title=Redis
+description=Redis is an open source, BSD licensed, advanced key-value store
+ports=<%= port_begin == port_end ? "#{port_begin}" : "#{port_begin}:#{port_end}"%>/tcp
+

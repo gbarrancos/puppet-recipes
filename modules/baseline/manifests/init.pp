@@ -1,23 +1,5 @@
 class baseline {
 
-  group { 'admin':
-    ensure => 'present',
-  }
-
-  user  { 'deploy':
-    ensure => 'present',
-    home => '/home/deploy',
-    shell => '/bin/bash',
-    groups => ["admin"], #added to sudoers by default on Ubuntu
-  }
-
-  file { "/home/deploy":
-    ensure => directory,
-    owner => deploy,
-    group => deploy,
-    mode => '0750',
-  }
-
   file { '/etc/ssh/sshd_config':
      ensure => file,
      owner => root,
@@ -46,8 +28,5 @@ class baseline {
   
   include monit
   
-  #TODO:
-  #activate ssh public key authentication for 'deploy', disable password
-  #only allow deploy to login via ssh
 }
 
