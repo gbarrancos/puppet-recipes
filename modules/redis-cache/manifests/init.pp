@@ -28,13 +28,6 @@ class redis-cache {
     content => template('redis-cache/redis.conf.erb'),
   }
  
-  file { '/etc/monit/conf.d/redis-server':
-    ensure => file,
-    owner => root,
-    group => root,
-    content => template('redis-cache/monit.erb')
-  }
-
   service { 'redis-server':
     ensure => 'running',
   }
@@ -50,12 +43,22 @@ class redis-cache {
   exec { 'Activate Redis TCP connections':
     user => root,
     group => root,
-    command => '/usr/sbin/ufw allow Redis'
-  } 
+    command => '/usr/sbin/ufw allow Redis',
+    require => File['/etc/ufw/applications.d/redis-server'],
+  }
+
+  file { '/etc/monit/conf.d/redis-server':
+    ensure => file,
+    owner => root,
+    group => root,
+    content => template('redis-cache/monit.erb'),
+    require => Package['monit'],
+  }
  
   exec {'Reload Monit with Redis Monitoring':
      user => root,
      group => root,
-     command => '/usr/bin/monit reload'
+     command => '/usr/bin/monit reload',
+     require => File['/etc/monit/conf.d/redis-server'],
   }
 }

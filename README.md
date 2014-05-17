@@ -10,5 +10,5 @@ This project contains the following recipes:
 
 From inside the project folder invoke puppet as follows:
 
-     puppet apply --modulepath ./modules manifests/cache.pp
+     sudo puppet apply --modulepath ./modules manifests/cache.pp
 

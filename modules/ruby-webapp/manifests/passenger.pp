@@ -17,24 +17,29 @@ class passenger {
     source => 'puppet:///modules/ruby-webapp/passenger.list',
     owner => root,
     group => root,
+    require => Exec['Adding Phusion Key'],
   }
 
-  exec { 'Updating packages list':
+  exec { 'PackageListUpdate':
      command => '/usr/bin/apt-get update',
      user => root,
+     require => File['/etc/apt/sources.list.d/passenger.list'],
   }
 
   package { 'nginx-extras': 
-    ensure => installed,
+    ensure => latest,
+    require => Exec['PackageListUpdate'],
   }
  
   package { 'passenger':
-    ensure => installed
+    ensure => installed,
+    require => Package['nginx-extras'],
   }
 
   service { 'nginx':
     restart => '',
     ensure => running, 
+    require => Package['passenger']
   } 
   
   file { '/etc/nginx/nginx.conf':
@@ -43,6 +48,7 @@ class passenger {
     ensure => file,
     mode => 644,
     content => template('ruby-webapp/nginx.conf.erb'),
+    require => Package['passenger'],
   }
   
 }

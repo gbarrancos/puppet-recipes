@@ -30,24 +30,27 @@ class nginx {
      purge => true,
   }
 
-  file { '/etc/monit/conf.d/nginx':
-     owner => root,
-     group => root,
-     ensure => file,
-     mode   => 644,
-     source => 'puppet:///modules/nginx/nginx_monitrc',
-  }
-
   exec { 'Incoming Http Requests at Port 80':
     user => root,
     group => root,
     command => '/usr/sbin/ufw allow 80'
   } 
 
+  file { '/etc/monit/conf.d/nginx':
+    owner => root,
+    group => root,
+    ensure => file,
+    mode   => 644,
+    source => 'puppet:///modules/nginx/nginx_monitrc',
+    require => Package['monit'],
+  }
+
+
   exec { 'Monit: load Nginx monitoring configuration':
      user => root,
      group => root,
-     command => '/usr/bin/monit reload'
+     command => '/usr/bin/monit reload',
+     require => File['/etc/monit/conf.d/nginx'],
   }
 
 }
